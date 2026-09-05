@@ -67,7 +67,8 @@ class GeminiClient:
         elif any(w in msg_lower for w in ["refund", "credit", "compensation", "reimbursement"]):
             fallback_intent = "REFUND"
 
-        if not self.client:
+        current_api_key = os.environ.get("GEMINI_API_KEY") if "GEMINI_API_KEY" in os.environ else self.api_key
+        if not self.client or not current_api_key:
             return {"intent": fallback_intent, "confidence": 0.85, "source": "keyword_fallback"}
 
         prompt = f"""You are a customer support intent classification system.
@@ -262,6 +263,44 @@ HANDOVER SUMMARY"""
             print(f"[WARNING] Gemini escalation handover generation failed: {e}")
 
         return fallback_resp
+
+    def get_embedding(self, text: str) -> Optional[List[float]]:
+        """
+        Generates text embedding vector using gemini-embedding-001.
+        Returns List[float] on success, or None if API key is missing, API call fails, or SDK is unsupported.
+        Does NOT raise exceptions and never exposes API keys.
+        """
+        current_api_key = os.environ.get("GEMINI_API_KEY") if "GEMINI_API_KEY" in os.environ else self.api_key
+        if not current_api_key or not text or not str(text).strip() or not self.client:
+            return None
+
+        clean_text = str(text).strip()
+
+        try:
+            if self.sdk_type == "google-genai":
+                response = self.client.models.embed_content(
+                    model="gemini-embedding-001",
+                    contents=clean_text
+                )
+                if hasattr(response, "embedding") and response.embedding is not None:
+                    if hasattr(response.embedding, "values") and response.embedding.values is not None:
+                        return list(response.embedding.values)
+                if hasattr(response, "embeddings") and response.embeddings:
+                    first = response.embeddings[0]
+                    if hasattr(first, "values") and first.values is not None:
+                        return list(first.values)
+            elif self.sdk_type == "google-generativeai":
+                import google.generativeai as legacy_genai
+                result = legacy_genai.embed_content(
+                    model="models/embedding-001",
+                    content=clean_text
+                )
+                if isinstance(result, dict) and "embedding" in result:
+                    return list(result["embedding"])
+        except Exception as e:
+            print(f"[WARNING] Gemini embedding generation failed: {e}")
+
+        return None
 
     def _call_gemini_raw(self, prompt: str) -> str:
         """

@@ -6,12 +6,33 @@ Deterministic data-access functions for loading customers, support tickets, and 
 import json
 import os
 import re
+import math
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 ARTICLES_DIR = DATA_DIR / "articles"
+
+# In-memory vector cache for embedded support articles
+_ARTICLE_EMBEDDINGS_CACHE: Dict[str, List[float]] = {}
+
+def cosine_similarity(vec_a: List[float], vec_b: List[float]) -> float:
+    """
+    Computes local cosine similarity between two numeric embedding vectors.
+    Returns float between -1.0 and 1.0 (or 0.0 for zero/mismatched vectors).
+    """
+    if not vec_a or not vec_b or len(vec_a) != len(vec_b):
+        return 0.0
+
+    dot_product = sum(a * b for a, b in zip(vec_a, vec_b))
+    norm_a = math.sqrt(sum(a * a for a in vec_a))
+    norm_b = math.sqrt(sum(b * b for b in vec_b))
+
+    if norm_a == 0.0 or norm_b == 0.0:
+        return 0.0
+
+    return dot_product / (norm_a * norm_b)
 
 # Default Keyword Mappings for Deterministic Keyword Matching
 KEYWORD_MAPPING = {
@@ -152,11 +173,15 @@ def load_articles(data_path: Optional[str] = None) -> List[Dict[str, Any]]:
 
     return articles
 
-def search_articles(query: str, category: Optional[str] = None, data_path: Optional[str] = None) -> List[Dict[str, Any]]:
+def search_articles(
+    query: str,
+    category: Optional[str] = None,
+    data_path: Optional[str] = None,
+    gemini_client: Optional[Any] = None
+) -> List[Dict[str, Any]]:
     """
-    Search articles deterministically using local keyword matching.
-    Returns matching articles sorted by relevance score.
-    Handles empty queries and missing files gracefully.
+    Search articles using Gemini gemini-embedding-001 vector similarity with local cosine matching.
+    Falls back gracefully to keyword matching if API key missing or embedding API fails.
     """
     if not query or not isinstance(query, str) or not query.strip():
         return []
@@ -165,7 +190,49 @@ def search_articles(query: str, category: Optional[str] = None, data_path: Optio
     if not articles:
         return []
 
-    # Clean and tokenize query
+    # Attempt embedding-based retrieval first if client provided or available
+    client_to_use = gemini_client
+    if client_to_use is None:
+        try:
+            from src.gemini import GeminiClient
+            client_to_use = GeminiClient()
+        except Exception:
+            client_to_use = None
+
+    if client_to_use is not None and getattr(client_to_use, "client", None) is not None:
+        try:
+            query_vec = client_to_use.get_embedding(query)
+            if query_vec:
+                scored_articles = []
+                for article in articles:
+                    art_id = article.get("article_id", article.get("id"))
+                    # Retrieve or generate article embedding
+                    if art_id not in _ARTICLE_EMBEDDINGS_CACHE:
+                        art_text = f"{article.get('title', '')}\n\n{article.get('content', '')}"
+                        art_vec = client_to_use.get_embedding(art_text)
+                        if art_vec:
+                            _ARTICLE_EMBEDDINGS_CACHE[art_id] = art_vec
+
+                    art_vec = _ARTICLE_EMBEDDINGS_CACHE.get(art_id)
+                    if art_vec:
+                        sim = cosine_similarity(query_vec, art_vec)
+                        # Category boost if category matches
+                        if category and category.lower() in article.get("category", "").lower():
+                            sim += 0.05
+
+                        scored = dict(article)
+                        scored["score"] = sim
+                        scored["retrieval_method"] = "gemini-embedding-001"
+                        scored_articles.append(scored)
+
+                if scored_articles:
+                    scored_articles.sort(key=lambda x: x["score"], reverse=True)
+                    if scored_articles[0]["score"] > 0:
+                        return scored_articles
+        except Exception as e:
+            print(f"[WARNING] Gemini embedding article search failed, using keyword fallback: {e}")
+
+    # Fallback: Deterministic local keyword matching algorithm
     query_clean = query.lower()
     query_words = set(re.findall(r"\w+", query_clean))
 
@@ -198,6 +265,7 @@ def search_articles(query: str, category: Optional[str] = None, data_path: Optio
         if score > 0:
             scored_article = dict(article)
             scored_article["score"] = score
+            scored_article["retrieval_method"] = "keyword_fallback"
             scored_articles.append(scored_article)
 
     # Sort by relevance score descending
@@ -206,10 +274,11 @@ def search_articles(query: str, category: Optional[str] = None, data_path: Optio
 
 class KnowledgeRetriever:
     """
-    Retriever class wrapping deterministic data loading and retrieval methods.
+    Retriever class wrapping data loading and retrieval methods.
     """
-    def __init__(self, data_path: str = "data"):
+    def __init__(self, data_path: str = "data", gemini_client: Optional[Any] = None):
         self.data_path = data_path
+        self.gemini_client = gemini_client
 
     def get_customer(self, customer_id: str) -> Optional[Dict[str, Any]]:
         return get_customer(customer_id, data_path=self.data_path)
@@ -218,4 +287,4 @@ class KnowledgeRetriever:
         return get_tickets(customer_id, data_path=self.data_path)
 
     def search_articles(self, query: str, category: Optional[str] = None) -> List[Dict[str, Any]]:
-        return search_articles(query, category=category, data_path=self.data_path)
+        return search_articles(query, category=category, data_path=self.data_path, gemini_client=self.gemini_client)

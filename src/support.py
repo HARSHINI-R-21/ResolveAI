@@ -45,7 +45,12 @@ class SupportAssistant:
         # Step 2: Retrieve local grounded context
         customer_record = get_customer(customer_id, data_path=self.data_path) if customer_id else None
         ticket_history = get_tickets(customer_id, data_path=self.data_path) if customer_id else []
-        retrieved_articles = search_articles(customer_message, category=category or intent, data_path=self.data_path)
+        retrieved_articles = search_articles(
+            customer_message,
+            category=category or intent,
+            data_path=self.data_path,
+            gemini_client=self.gemini_client
+        )
 
         top_article = retrieved_articles[0] if retrieved_articles else None
 
