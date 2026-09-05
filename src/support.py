@@ -72,6 +72,7 @@ class SupportAssistant:
         return {
             "status": "success",
             "customer_id": customer_id,
+            "customer_record": customer_record,
             "intent": intent,
             "confidence": confidence,
             "decision": rule_decision["decision"],
@@ -80,6 +81,7 @@ class SupportAssistant:
             "missing_information": rule_decision.get("missing_information", []),
             "evidence": rule_decision.get("evidence", []),
             "article_id": rule_decision.get("article_id"),
+            "article_title": top_article.get("title") if top_article else None,
             "escalation_facts": rule_decision.get("escalation_facts", []),
             "previous_attempts": rule_decision.get("previous_attempts", [])
         }

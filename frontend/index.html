@@ -3,104 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ResolveAI - Grounded AI Customer Support Resolution Assistant for Broadband & Mobile services.">
-    <title>ResolveAI - Support Resolution Assistant</title>
-    <!-- Modern Google Font: Inter -->
+    <meta name="description" content="ResolveAI - AI-powered customer support resolution assistant. Grounded AI + Deterministic Rules.">
+    <title>ResolveAI - Customer Support Resolution Assistant</title>
+    <!-- Modern Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Header Bar -->
+        <!-- Top Header Bar -->
         <header class="app-header">
             <div class="brand">
                 <div class="logo-icon">⚡</div>
                 <div class="brand-text">
-                    <h1>ResolveAI</h1>
-                    <p class="subtitle">Customer Support Resolution Assistant</p>
+                    <div class="brand-title-row">
+                        <h1>ResolveAI</h1>
+                        <span class="tagline">"Resolve faster. Escalate smarter."</span>
+                    </div>
+                    <p class="subtitle">AI-powered customer support resolution assistant</p>
                 </div>
             </div>
             <div class="header-status">
                 <span class="status-indicator online"></span>
-                <span class="status-text">Backend Connected</span>
+                <span class="status-text">AI + Grounded Knowledge</span>
             </div>
         </header>
 
-        <!-- Main Workspace -->
-        <main class="workspace-grid">
-            <!-- Sidebar: Customer & Case Lookup -->
-            <aside class="sidebar-panel">
-                <section class="panel-section">
-                    <h2 class="section-title">Customer Search</h2>
+        <!-- Main Dashboard Workspace -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Panel: Customer Context & Selection -->
+            <aside class="left-panel">
+                <!-- Customer Selector Card -->
+                <div class="card customer-select-card">
+                    <h2 class="card-title">Customer Selection</h2>
                     <div class="form-group">
-                        <label for="customer-id-input">Customer ID</label>
-                        <input type="text" id="customer-id-input" placeholder="e.g. CUST-1001" value="CUST-1001">
-                    </div>
-                    <button id="fetch-customer-btn" class="btn btn-secondary">Load Customer Data</button>
-                </section>
-
-                <section class="panel-section customer-card-section" id="customer-card">
-                    <h2 class="section-title">Verified Customer Profile</h2>
-                    <div class="profile-placeholder" id="profile-content">
-                        <p class="text-muted">Enter a Customer ID to view account records.</p>
-                    </div>
-                </section>
-            </aside>
-
-            <!-- Center Panel: Query Input & Resolution Display -->
-            <section class="main-panel">
-                <div class="panel-card query-card">
-                    <h2 class="section-title">Support Case Query</h2>
-                    <div class="form-group">
-                        <label for="category-select">Issue Category</label>
-                        <select id="category-select">
-                            <option value="billing">Billing Complaints</option>
-                            <option value="connection">Connection Problems</option>
-                            <option value="plans">Plan Questions</option>
+                        <label for="customer-select">Select Customer</label>
+                        <select id="customer-select">
+                            <option value="">-- Select Customer --</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="query-input">Customer Query / Description</label>
-                        <textarea id="query-input" rows="4" placeholder="Describe the customer's broadband or mobile query in detail..."></textarea>
-                    </div>
-                    <button id="submit-query-btn" class="btn btn-primary">Process Resolution</button>
                 </div>
 
-                <!-- Result Card -->
-                <div class="panel-card result-card" id="result-card">
+                <!-- Customer Context Card -->
+                <div class="card customer-context-card" id="customer-context-card">
+                    <h2 class="card-title">Customer Context</h2>
+                    <div id="customer-summary" class="customer-summary">
+                        <p class="text-muted">Select a customer from the dropdown to load verified account records.</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center Panel: Query Input & Primary Resolution Card -->
+            <section class="center-panel">
+                <!-- Query Input Card -->
+                <div class="card query-card">
+                    <h2 class="card-title">Customer Request</h2>
+                    <div class="form-group">
+                        <label for="query-input">Customer Message</label>
+                        <textarea id="query-input" rows="4" placeholder="Describe the customer's issue..."></textarea>
+                    </div>
+                    <div class="action-row">
+                        <button id="analyze-btn" class="btn btn-primary">
+                            <span class="btn-text">Analyze Request</span>
+                            <span class="spinner hidden" id="btn-spinner"></span>
+                        </button>
+                    </div>
+                    <div id="error-banner" class="alert alert-error hidden"></div>
+                </div>
+
+                <!-- Primary Decision & AI Response Card -->
+                <div class="card result-card hidden" id="result-card">
                     <div class="result-header">
-                        <h2>Assistant Decision</h2>
-                        <div id="decision-badge" class="badge badge-neutral">AWAITING QUERY</div>
+                        <div>
+                            <span class="meta-label">Assistant Decision</span>
+                            <div class="decision-badge-row">
+                                <span id="decision-badge" class="badge">AWAITING</span>
+                                <span id="intent-badge" class="badge badge-intent hidden">INTENT</span>
+                            </div>
+                        </div>
+                        <div class="decision-meta" id="decision-status-label"></div>
                     </div>
 
-                    <div class="result-body" id="result-body">
-                        <p class="placeholder-text">Submit a support query to analyze grounding evidence and generate a decision (RESOLVE, ASK, or ESCALATE).</p>
+                    <div class="result-section">
+                        <h3 class="section-subtitle">Decision Rationale</h3>
+                        <p id="decision-reason" class="reason-text"></p>
+                    </div>
+
+                    <!-- AI Grounded Response Card -->
+                    <div class="ai-response-box">
+                        <div class="box-header">
+                            <h3>AI Response</h3>
+                            <button id="copy-btn" class="btn btn-sm btn-ghost">Copy Response</button>
+                        </div>
+                        <div id="ai-response-text" class="response-body"></div>
+                        <div id="resolve-status-tag" class="status-tag resolve-tag hidden">
+                            ✓ Ready for agent review
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Decision-Specific Panels -->
+
+                    <!-- ASK Panel -->
+                    <div id="ask-panel" class="decision-panel ask-panel hidden">
+                        <h3 class="panel-heading">⚠️ Additional Information Needed</h3>
+                        <p class="panel-sub">The system requires the following specific details to process resolution:</p>
+                        <ul id="missing-info-list" class="styled-list"></ul>
+                    </div>
+
+                    <!-- ESCALATE Panel -->
+                    <div id="escalate-panel" class="decision-panel escalate-panel hidden">
+                        <h3 class="panel-heading">🚨 Escalation Handover Summary</h3>
+                        <div class="escalate-grid">
+                            <div class="escalate-block">
+                                <h4>ESTABLISHED FACTS</h4>
+                                <ul id="escalate-facts-list" class="styled-list"></ul>
+                            </div>
+                            <div class="escalate-block">
+                                <h4>PREVIOUS ATTEMPTS</h4>
+                                <ul id="escalate-attempts-list" class="styled-list"></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Right Panel: Evidence & Knowledge Citations -->
-            <aside class="sidebar-panel evidence-panel">
-                <section class="panel-section">
-                    <h2 class="section-title">Supporting Evidence</h2>
+            <!-- Right Panel: Evidence & Knowledge Source -->
+            <aside class="right-panel">
+                <!-- Grounded Evidence Card -->
+                <div class="card evidence-card">
+                    <h2 class="card-title">Evidence</h2>
                     <div id="evidence-container" class="evidence-list">
-                        <div class="evidence-item empty-state">
-                            <p>No active evidence. Verified account data and knowledge citations will appear here.</p>
-                        </div>
+                        <p class="text-muted">Factual account evidence will appear here after request analysis.</p>
                     </div>
-                </section>
+                </div>
 
-                <section class="panel-section">
-                    <h2 class="section-title">Source Articles</h2>
-                    <div id="articles-container" class="articles-list">
-                        <div class="article-item empty-state">
-                            <p>No KB articles cited yet.</p>
-                        </div>
+                <!-- Knowledge Source Card -->
+                <div class="card source-card">
+                    <h2 class="card-title">Knowledge Source</h2>
+                    <div id="knowledge-source-container">
+                        <p class="text-muted">No knowledge article matched this request.</p>
                     </div>
-                </section>
+                </div>
             </aside>
+
         </main>
     </div>
 

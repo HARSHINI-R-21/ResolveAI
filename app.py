@@ -28,7 +28,10 @@ class ResolveAIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         # API Routes
-        if self.path.startswith("/api/customers/"):
+        if self.path == "/api/customers" or self.path == "/api/customers/":
+            self._handle_get_all_customers()
+            return
+        elif self.path.startswith("/api/customers/"):
             customer_id = self.path.split("/")[-1]
             self._handle_get_customer(customer_id)
             return
@@ -44,6 +47,22 @@ class ResolveAIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
         
         self.send_error(404, "API endpoint not found")
+
+    def _handle_get_all_customers(self):
+        """
+        API handler for returning all customer records.
+        """
+        customers_file = BASE_DIR / "data" / "customers.json"
+        if customers_file.exists():
+            try:
+                with open(customers_file, "r", encoding="utf-8") as f:
+                    customers = json.load(f)
+                self._send_json_response(200, customers)
+                return
+            except Exception as e:
+                self._send_json_response(500, {"error": f"Failed to load customers data: {str(e)}"})
+                return
+        self._send_json_response(404, {"error": "Customers file not found."})
 
     def _handle_get_customer(self, customer_id: str):
         """
