@@ -11,9 +11,13 @@ import os
 import json
 from pathlib import Path
 
+from src.support import SupportAssistant
+
 PORT = int(os.environ.get("PORT", 8000))
 BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
+
+assistant = SupportAssistant(data_path=str(BASE_DIR / "data"))
 
 class ResolveAIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     """
@@ -43,7 +47,7 @@ class ResolveAIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
     def _handle_get_customer(self, customer_id: str):
         """
-        Placeholder API handler for customer retrieval.
+        API handler for customer retrieval.
         """
         customers_file = BASE_DIR / "data" / "customers.json"
         if customers_file.exists():
@@ -62,7 +66,7 @@ class ResolveAIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
     def _handle_resolve_request(self):
         """
-        Placeholder API handler for processing support query resolution.
+        API handler for processing support query resolution via SupportAssistant pipeline.
         """
         content_length = int(self.headers.get("Content-Length", 0))
         post_data = self.rfile.read(content_length)
@@ -73,19 +77,7 @@ class ResolveAIHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._send_json_response(400, {"error": "Invalid JSON body"})
             return
 
-        # Placeholder resolution response structure
-        response_payload = {
-            "status": "success",
-            "decision": "ASK",
-            "reasoning": "Placeholder decision engine: Additional customer information required.",
-            "response_text": f"Placeholder: Received query '{payload.get('query')}' for category '{payload.get('category')}'. Resolution logic is being implemented.",
-            "evidence": [
-                {"type": "account_check", "detail": f"Customer ID: {payload.get('customer_id', 'Unknown')}"}
-            ],
-            "cited_articles": [
-                {"title": "Broadband & Mobile Billing Guide", "file": "data/articles/billing.md"}
-            ]
-        }
+        response_payload = assistant.process_request(payload)
         self._send_json_response(200, response_payload)
 
     def _send_json_response(self, statusCode: int, data: dict):
