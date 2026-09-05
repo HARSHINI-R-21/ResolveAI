@@ -1,19 +1,38 @@
-# Knowledge Article: Refund & Credit Policy
+# Credits and Refunds
 
-**Article ID:** KB-REFUND-004  
-**Category:** Billing & Refund Requests  
-**Last Updated:** 2026-09-01
+**Article ID:** REFUND-001  
+**Category:** Refunds  
+**Keywords:** refund, credit, compensation, reimbursement, billing, overcharge, outage  
 
 ---
 
-## 1. Eligibility Criteria
-- Service downtime exceeding 24 consecutive hours due to network failure.
-- Proven billing calculation error by the system.
+## Purpose
+This article defines policy thresholds and verification procedures for granting account credits, downtime compensation, or monetary refunds to customers.
 
-## 2. Refund Limits & Approval Thresholds
-- **Automated Credit**: Up to $20.00 can be issued directly as account credit by the assistant (**`RESOLVE`**).
-- **Manager Approval**: Cash refunds or credits over $20.00 must be routed to human finance supervisors (**`ESCALATE`**).
+---
 
-## 3. Processing Timeline
-- Statement credits appear within 1-2 billing cycles.
-- Direct-to-bank refunds take 3-5 business days upon approval.
+## Procedure
+
+### 1. When Credit/Refund May Be Considered
+- Verified network outage lasting more than 24 consecutive hours.
+- Confirmed systemic overcharge or duplicate billing charge.
+- Unfulfilled add-on service that was billed but not activated.
+
+### 2. Information That Must Be Verified
+Agents must verify:
+- Outage log verification report from technical operations.
+- Customer payment receipt and bill statement date.
+- Prior credits issued on customer account within the last 12 months.
+
+*Strict Evidence Rule: Never promise a refund or credit to a customer without sufficient verified evidence in system logs.*
+
+### 3. Agent Credit Limit
+- Agents may grant direct account credits up to **$20.00** when criteria are met.
+
+---
+
+## Escalation Conditions
+Escalate case to finance/management (**ESCALATE**) when:
+- Refund or credit request exceeds $20.00.
+- Customer requests direct refund to bank account / credit card rather than bill credit.
+- Customer threatens legal action or regulatory formal complaints.

@@ -1,26 +1,31 @@
-# Knowledge Article: Connection & Technical Troubleshooting
+# Internet Connection Troubleshooting
 
-**Article ID:** KB-CONN-002  
-**Category:** Broadband & Mobile Connection Problems  
-**Last Updated:** 2026-09-01
+**Article ID:** CONN-001  
+**Category:** Connection  
+**Keywords:** internet, connection, outage, offline, router, network, broadband, Wi-Fi, disconnect  
 
 ---
 
-## 1. Initial Broadband Troubleshooting Checklist
-1. Verify optical network terminal (ONT) and router power LEDs.
-2. Perform a power cycle: unplug router for 30 seconds, then reconnect.
-3. Check regional network outage board before reporting hardware failure.
+## Purpose
+This article outlines the standard troubleshooting protocol for agents addressing customer internet connection problems, broadband disconnections, offline routers, or degraded network speeds.
 
-## 2. Mobile Network Disconnections
-- Check SIM card seating or eSIM profile status.
-- Reset Network Settings on mobile device (`Settings > General > Reset Network Settings`).
-- Confirm device is not in Airplane Mode or roaming restriction zone.
+---
 
-## 3. Required Diagnostic Information
-If connection issues persist, ask customer for (**`ASK`**):
-- Exact modem/router model number
-- Error light colors/status (e.g. flashing red vs solid green)
-- Signal strength/speed test results in Mbps
+## Procedure
 
-## 4. Escalation Trigger Criteria
-If power cycle fails and area outage is ruled out, or line noise indicates physical cable damage, hand case over to technical field operations (**`ESCALATE`**).
+### 1. Account & Line Status Verification
+- **Account & Billing Verification**: Confirm account status is active and billing is paid (ensure connection was not disabled for non-payment).
+- **Connection Status Check**: Check live modem telemetry status (`active`, `inactive`, or `degraded`).
+
+### 2. Basic Technical Troubleshooting Steps
+1. **Router Restart / Power Cycle**: Direct customer to power off router and Optical Network Terminal (ONT), wait 30 seconds, and reconnect.
+2. **Connection & Cable Check**: Verify Ethernet cable seating between ONT/Modem and Router WAN port. Check front panel LED lights (Solid Green = Normal, Red/Flashing = Fault).
+3. **Previous Support Ticket Audit**: Review customer ticket history to check for recent unresolved disconnections or ongoing network issues.
+
+---
+
+## Escalation Conditions
+Hand case over to Level-2 Technical Support / Field Engineering (**ESCALATE**) if:
+- Physical line fault detected (e.g., Red Optical/LOS light persists after router restart).
+- Customer has multiple unresolved connection tickets or repeated unresolved outages (e.g. 2+ open tickets).
+- Account is active and paid, but broadband line fails sync test completely.

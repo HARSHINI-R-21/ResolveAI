@@ -1,20 +1,39 @@
-# Knowledge Article: Broadband & Mobile Billing Guide
+# Unexpected Bill Increase
 
-**Article ID:** KB-BILL-001  
-**Category:** Billing Complaints & Payment Queries  
-**Last Updated:** 2026-09-01
+**Article ID:** BILL-001  
+**Category:** Billing  
+**Keywords:** bill, billing, charge, payment, invoice, increase, overage, fee  
 
 ---
 
-## 1. Overview of Billing Charges
-Monthly bills include your base plan rate, mandatory taxes/regulatory fees, and optional add-ons or usage overages.
+## Purpose
+This article provides procedures for customer support agents to investigate and resolve customer queries regarding an unexpected bill increase, payment variances, invoice line-item charges, or overage fees.
 
-## 2. Common Unexpected Charges
-- **One-time activation/setup fees**: Applied on initial subscription or service upgrades.
-- **Late Payment Fee**: A fixed $10 fee is applied if payment is not received within 7 days past the due date.
-- **Data Overage**: For non-unlimited plans, data beyond cap is charged at $10 per 5GB block.
+---
 
-## 3. Disputing a Bill
-- If an overcharge is identified, verify the account billing history in `data/customers.json`.
-- Disputed charges under $50 may be credited automatically by agent verification.
-- Disputed charges exceeding $50 or involving bank chargebacks require human escalation (**`ESCALATE`**).
+## Procedure
+
+### 1. Verification Steps
+- Verify customer identity and load account record from system (`customer_id`, `current_bill`, `billing_status`).
+- Compare current bill amount against regular monthly plan base rate.
+- Check itemized invoice breakdown for recent changes.
+
+### 2. Common Reasons for Increased Bills
+- **Equipment Charges**: Unreturned modem/router fees, device rental fees, or hardware upgrade installments.
+- **Add-on Charges**: International roaming passes, streaming service bundles, or static IP addons.
+- **One-time Charges**: Activation fees, late payment fees ($10 flat rate), or technician visit charges.
+- **Usage-related Charges**: Mobile data overage beyond plan cap, international call minutes, or premium SMS.
+
+### 3. Agent Verification Checklist
+Agents must verify and confirm:
+- Billing cycle start and end dates.
+- Exactly which line item contributed to the price difference.
+- Whether promo/discount period expired.
+
+---
+
+## Escalation Conditions
+Hand the case over to human billing specialist (**ESCALATE**) if:
+- Disputed charge exceeds $50.00 without clear resolution.
+- Customer claims unauthorized bank chargeback or fraudulent transaction.
+- System error caused double-billing across consecutive statements.
