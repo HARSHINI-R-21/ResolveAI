@@ -1,20 +1,90 @@
 [
   {
-    "ticket_id": "TICK-8001",
-    "customer_id": "CUST-1001",
-    "category": "connection",
-    "subject": "Intermittent Wi-Fi Disconnections",
-    "status": "closed",
-    "created_at": "2026-08-15T10:30:00Z",
-    "resolution_summary": "Rebooted optical network terminal (ONT) remotely."
+    "ticket_id": "T-0011",
+    "customer_id": "C001",
+    "issue": "Inquiry about upgrade from BasicFiber 100 to UltraFiber 500",
+    "status": "resolved",
+    "created_at": "2026-08-10T09:15:00Z",
+    "previous_attempts": ["provided plan comparison documentation"]
   },
   {
-    "ticket_id": "TICK-8002",
-    "customer_id": "CUST-1002",
-    "category": "billing",
-    "subject": "International Data Addon Overcharge Query",
+    "ticket_id": "T-0021",
+    "customer_id": "C002",
+    "issue": "Unexpected $70 bill increase on September statement due to international roaming",
     "status": "open",
-    "created_at": "2026-09-01T14:15:00Z",
-    "resolution_summary": null
+    "created_at": "2026-09-02T16:45:00Z",
+    "previous_attempts": ["billing history review", "sent breakdown of roaming usage"]
+  },
+  {
+    "ticket_id": "T-0031",
+    "customer_id": "C003",
+    "issue": "Broadband optical light red - Connection dropped after power surge",
+    "status": "open",
+    "created_at": "2026-09-04T08:30:00Z",
+    "previous_attempts": ["router restart"]
+  },
+  {
+    "ticket_id": "T-0041",
+    "customer_id": "C004",
+    "issue": "Questions regarding 5G Flex Saver hotspot data allowance",
+    "status": "resolved",
+    "created_at": "2026-08-28T11:20:00Z",
+    "previous_attempts": ["kb article shared", "explained 15GB hotspot limit"]
+  },
+  {
+    "ticket_id": "T-0051",
+    "customer_id": "C005",
+    "issue": "Total broadband outage - Red optical alarm light on router",
+    "status": "open",
+    "created_at": "2026-09-02T10:15:00Z",
+    "previous_attempts": ["router restart", "connection check", "remote ONT power cycle"]
+  },
+  {
+    "ticket_id": "T-0052",
+    "customer_id": "C005",
+    "issue": "Persistent connection failure after storm - Gateway missing sync signal",
+    "status": "open",
+    "created_at": "2026-09-04T14:30:00Z",
+    "previous_attempts": ["router restart", "connection check", "previous support contact", "line diagnostics attempted"]
+  },
+  {
+    "ticket_id": "T-0053",
+    "customer_id": "C005",
+    "issue": "Initial fiber installation speed check",
+    "status": "resolved",
+    "created_at": "2026-05-10T09:00:00Z",
+    "previous_attempts": ["tech visit", "port configuration"]
+  },
+  {
+    "ticket_id": "T-0061",
+    "customer_id": "C006",
+    "issue": "Overdue invoice notification and account suspension warning",
+    "status": "open",
+    "created_at": "2026-09-01T13:10:00Z",
+    "previous_attempts": ["sent payment portal link"]
+  },
+  {
+    "ticket_id": "T-0071",
+    "customer_id": "C007",
+    "issue": "Wi-Fi coverage dead zone in home office",
+    "status": "resolved",
+    "created_at": "2026-08-14T15:00:00Z",
+    "previous_attempts": ["recommended mesh extender placement"]
+  },
+  {
+    "ticket_id": "T-0081",
+    "customer_id": "C008",
+    "issue": "Requesting $15 credit due to 8-hour regional outage on August 25",
+    "status": "open",
+    "created_at": "2026-09-03T11:00:00Z",
+    "previous_attempts": ["verified regional outage log"]
+  },
+  {
+    "ticket_id": "T-0091",
+    "customer_id": "C009",
+    "issue": "Download speed drops below 50 Mbps during peak hours (8 PM - 11 PM)",
+    "status": "open",
+    "created_at": "2026-09-03T20:20:00Z",
+    "previous_attempts": ["logged speed test history", "line noise scan"]
   }
 ]

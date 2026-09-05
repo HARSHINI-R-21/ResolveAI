@@ -1,24 +1,82 @@
 [
   {
-    "customer_id": "CUST-1001",
-    "name": "Alex Johnson",
-    "service_type": "broadband",
-    "plan_name": "UltraFiber 500",
-    "status": "active",
-    "billing_status": "current",
-    "monthly_fee": 69.99,
-    "last_bill_amount": 69.99,
-    "autopay_enabled": true
+    "customer_id": "C001",
+    "name": "Alice Smith",
+    "plan": "BasicFiber 100",
+    "billing_status": "paid",
+    "current_bill": 49.99,
+    "connection_status": "active"
   },
   {
-    "customer_id": "CUST-1002",
-    "name": "Samira Patel",
-    "service_type": "mobile",
-    "plan_name": "5G Unlimited Plus",
-    "status": "active",
+    "customer_id": "C002",
+    "name": "Bob Miller",
+    "plan": "5G Unlimited Plus",
+    "billing_status": "unexpected_increase",
+    "current_bill": 115.00,
+    "connection_status": "active"
+  },
+  {
+    "customer_id": "C003",
+    "name": "Charlie Davis",
+    "plan": "UltraFiber 500",
+    "billing_status": "paid",
+    "current_bill": 69.99,
+    "connection_status": "inactive"
+  },
+  {
+    "customer_id": "C004",
+    "name": "Diana Prince",
+    "plan": "5G Flex Saver",
+    "billing_status": "paid",
+    "current_bill": 25.00,
+    "connection_status": "active"
+  },
+  {
+    "customer_id": "C005",
+    "name": "Ethan Vance",
+    "plan": "GigabitMax 1000",
+    "billing_status": "paid",
+    "current_bill": 89.99,
+    "connection_status": "inactive"
+  },
+  {
+    "customer_id": "C006",
+    "name": "Fiona Gallagher",
+    "plan": "UltraFiber 500",
     "billing_status": "overdue",
-    "monthly_fee": 45.00,
-    "last_bill_amount": 85.00,
-    "autopay_enabled": false
+    "current_bill": 139.98,
+    "connection_status": "active"
+  },
+  {
+    "customer_id": "C007",
+    "name": "George Clark",
+    "plan": "BasicFiber 100",
+    "billing_status": "paid",
+    "current_bill": 49.99,
+    "connection_status": "active"
+  },
+  {
+    "customer_id": "C008",
+    "name": "Hannah Abbott",
+    "plan": "5G Flex Saver",
+    "billing_status": "paid",
+    "current_bill": 25.00,
+    "connection_status": "active"
+  },
+  {
+    "customer_id": "C009",
+    "name": "Ian Malcolm",
+    "plan": "UltraFiber 500",
+    "billing_status": "paid",
+    "current_bill": 69.99,
+    "connection_status": "active"
+  },
+  {
+    "customer_id": "C010",
+    "name": "Julia Roberts",
+    "plan": "GigabitMax 1000",
+    "billing_status": "paid",
+    "current_bill": 89.99,
+    "connection_status": "active"
   }
 ]
