@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ResolveAI - Grounded AI Customer Support Resolution Assistant for Broadband & Mobile services.">
+    <title>ResolveAI - Support Resolution Assistant</title>
+    <!-- Modern Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Bar -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="logo-icon">⚡</div>
+                <div class="brand-text">
+                    <h1>ResolveAI</h1>
+                    <p class="subtitle">Customer Support Resolution Assistant</p>
+                </div>
+            </div>
+            <div class="header-status">
+                <span class="status-indicator online"></span>
+                <span class="status-text">Backend Connected</span>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace-grid">
+            <!-- Sidebar: Customer & Case Lookup -->
+            <aside class="sidebar-panel">
+                <section class="panel-section">
+                    <h2 class="section-title">Customer Search</h2>
+                    <div class="form-group">
+                        <label for="customer-id-input">Customer ID</label>
+                        <input type="text" id="customer-id-input" placeholder="e.g. CUST-1001" value="CUST-1001">
+                    </div>
+                    <button id="fetch-customer-btn" class="btn btn-secondary">Load Customer Data</button>
+                </section>
+
+                <section class="panel-section customer-card-section" id="customer-card">
+                    <h2 class="section-title">Verified Customer Profile</h2>
+                    <div class="profile-placeholder" id="profile-content">
+                        <p class="text-muted">Enter a Customer ID to view account records.</p>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Center Panel: Query Input & Resolution Display -->
+            <section class="main-panel">
+                <div class="panel-card query-card">
+                    <h2 class="section-title">Support Case Query</h2>
+                    <div class="form-group">
+                        <label for="category-select">Issue Category</label>
+                        <select id="category-select">
+                            <option value="billing">Billing Complaints</option>
+                            <option value="connection">Connection Problems</option>
+                            <option value="plans">Plan Questions</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="query-input">Customer Query / Description</label>
+                        <textarea id="query-input" rows="4" placeholder="Describe the customer's broadband or mobile query in detail..."></textarea>
+                    </div>
+                    <button id="submit-query-btn" class="btn btn-primary">Process Resolution</button>
+                </div>
+
+                <!-- Result Card -->
+                <div class="panel-card result-card" id="result-card">
+                    <div class="result-header">
+                        <h2>Assistant Decision</h2>
+                        <div id="decision-badge" class="badge badge-neutral">AWAITING QUERY</div>
+                    </div>
+
+                    <div class="result-body" id="result-body">
+                        <p class="placeholder-text">Submit a support query to analyze grounding evidence and generate a decision (RESOLVE, ASK, or ESCALATE).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Evidence & Knowledge Citations -->
+            <aside class="sidebar-panel evidence-panel">
+                <section class="panel-section">
+                    <h2 class="section-title">Supporting Evidence</h2>
+                    <div id="evidence-container" class="evidence-list">
+                        <div class="evidence-item empty-state">
+                            <p>No active evidence. Verified account data and knowledge citations will appear here.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel-section">
+                    <h2 class="section-title">Source Articles</h2>
+                    <div id="articles-container" class="articles-list">
+                        <div class="article-item empty-state">
+                            <p>No KB articles cited yet.</p>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
